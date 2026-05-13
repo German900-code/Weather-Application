@@ -21,28 +21,19 @@ import {
   WiDaySunny,
 } from "react-icons/wi";
 import { ImEye } from "react-icons/im";
+import WeatherConditionCard from "./WeatherConditionCard";
 
 const CurrentConditions = ({ data, API_KEY }) => {
   const [airData, setAirData] = useState(null);
-  // if (!data) return null;
+  const [uvIndex, setUvIndex] = useState(null);
+  const lat = data?.coord?.lat;
+  const lon = data?.coord?.lon;
   const rain = data.rain?.["1h"];
   const snow = data.snow?.["1h"];
   const precipitation = (rain ?? 0) + (snow ?? 0);
 
-  async function getAirQuality(lat, lon) {
-    // const { lat, lon } = data.coord;
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
-      );
-      if (!response.ok) return;
-      const result = await response.json();
-      console.log("Result of fetch API: ", result);
-      setAirData(result);
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
+  const UV_API_KEY = import.meta.env.VITE_UV_API_KEY;
+
   const getAQILabel = (aqi) => {
     switch (aqi) {
       case 1:
@@ -60,6 +51,146 @@ const CurrentConditions = ({ data, API_KEY }) => {
     }
   };
 
+  const getUVLevel = (uv) => {
+    if (uv <= 2) return "Low 🟢";
+    if (uv <= 5) return "Moderate 🟡";
+    if (uv <= 7) return "High 🟠";
+    if (uv <= 10) return "Very High 🔴";
+    return "Extreme 🟣";
+  };
+  const weatherConditions = [
+    {
+      id: "temperature",
+      icon: <WiThermometer size={40} className="text-red-500" />,
+      name: "Temperature",
+      value: `${Math.round(data.main.temp)}°C`,
+    },
+    {
+      id: "wind",
+      icon: <WiWindy size={40} className="text-gray-400" />,
+      name: "Wind speed",
+      value: `${Math.round(data.wind.speed)} km/h`,
+    },
+    {
+      id: "uv",
+      icon: <WiDaySunny size={40} className="text-yellow-400" />,
+      name: "UV Index",
+      value:
+        uvIndex !== null ? `${uvIndex} ${getUVLevel(uvIndex)}` : "Loading...",
+    },
+    {
+      id: "humidity",
+      icon: <WiHumidity size={40} className="text-blue-400" />,
+      name: "Humidity",
+      value: `${data.main.humidity}%`,
+    },
+    {
+      id: "precipitation",
+      icon: <WiRain size={40} className="text-gray-500" />,
+      name: "Precipitation",
+      value: `${precipitation > 0 ? `${precipitation} mm` : "No precipitation"}`,
+    },
+    {
+      id: "pressure",
+      icon: <WiBarometer size={40} className="text-blue-300" />,
+      name: "Pressure",
+      value: `${data.main.pressure} hPa`,
+    },
+    {
+      id: "sunrise",
+      icon: <WiSunrise size={40} className="text-yellow-200" />,
+      name: "Sunrise",
+      value: `${new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
+    },
+    {
+      id: "sunset",
+      icon: <WiSunset size={40} className="text-orange-500" />,
+      name: "Sunset",
+      value: `${new Date(data.sys.sunset * 1000).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
+    },
+    {
+      id: "air quality",
+      icon: <WiDust size={40} />,
+      name: "Air Quality",
+      value: `${airData?.list?.[0]?.main?.aqi} ${getAQILabel(airData?.list?.[0]?.main?.aqi)}`,
+    },
+    {
+      id: "visibility",
+      icon: <ImEye size={35} className="text-green-400" />,
+      name: "Visibility",
+      value: `${(data.visibility / 1000).toFixed(1) + "km"}`,
+    },
+  ];
+
+  // const fetchUVIndex = async (lat, lon) => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://api.weatherapi.com/v1/current.json?key=${UV_API_KEY}&q=${lat},${lon}&aqi=yes`,
+  //     );
+  //     console.log("Response of fetch UV Index: ", response);
+  //     const data = await response.json();
+  //     console.log("UV DATA: ", data);
+
+  //     if (!response.ok) {
+  //       console.log(
+  //         "Failed to fetch UV index. Response status: ",
+  //         response.status,
+  //       );
+  //       return;
+  //     }
+  //     console.log("UV Index data: ", data);
+  //     setUvIndex(Math.floor(data.current.uv));
+  //     console.log("CURRENT UV INDEX: ", data.current.uv);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
+
+  // async function getAirQuality(lat, lon) {
+  //   // const { lat, lon } = data.coord;
+  //   try {
+  //     const response = await fetch(
+  //       `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
+  //     );
+  //     if (!response.ok) return;
+  //     const result = await response.json();
+  //     console.log("Result of fetch API: ", result);
+  //     setAirData(result);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // }
+  // const getAQILabel = (aqi) => {
+  //   switch (aqi) {
+  //     case 1:
+  //       return "Good 🟢";
+  //     case 2:
+  //       return "Fair 🟡";
+  //     case 3:
+  //       return "Moderate 🟠";
+  //     case 4:
+  //       return "Poor 🔴";
+  //     case 5:
+  //       return "Very Poor 🟣";
+  //     default:
+  //       return "Unknown";
+  //   }
+  // };
+
+  // const getUVLevel = (uv) => {
+  //   if (uv <= 2) return "Low 🟢";
+  //   if (uv <= 5) return "Moderate 🟡";
+  //   if (uv <= 7) return "High 🟠";
+  //   if (uv <= 10) return "Very High 🔴";
+  //   return "Extreme 🟣";
+  // };
+
   function formatTimeWithOffset(unixTime, timezoneOffsetInSeconds) {
     const localUnixTime = unixTime + timezoneOffsetInSeconds;
     const date = new Date(localUnixTime * 1000);
@@ -70,12 +201,51 @@ const CurrentConditions = ({ data, API_KEY }) => {
   }
 
   useEffect(() => {
-    if (!data?.coord) return;
+    if (!lat || !lon) return;
 
-    const { lat, lon } = data.coord;
+    const fetchUVIndex = async (lat, lon) => {
+      try {
+        const response = await fetch(
+          `https://api.weatherapi.com/v1/current.json?key=${UV_API_KEY}&q=${lat},${lon}&aqi=yes`,
+        );
+        console.log("Response of fetch UV Index: ", response);
+        const data = await response.json();
+        console.log("UV DATA: ", data);
 
+        if (!response.ok) {
+          console.log(
+            "Failed to fetch UV index. Response status: ",
+            response.status,
+          );
+          return;
+        }
+        console.log("UV Index data: ", data);
+        setUvIndex(Math.floor(data.current.uv));
+        console.log("CURRENT UV INDEX: ", data.current.uv);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    async function getAirQuality(lat, lon) {
+      // const { lat, lon } = data.coord;
+      try {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
+        );
+        if (!response.ok) return;
+        const result = await response.json();
+        console.log("Result of fetch API: ", result);
+        setAirData(result);
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+    // const { lat, lon } = data.coord;
+
+    fetchUVIndex(lat, lon);
     getAirQuality(lat, lon);
-  }, [data]);
+  }, [lat, lon]);
 
   // useEffect(() => {
   //   if (!data) return;
@@ -83,98 +253,28 @@ const CurrentConditions = ({ data, API_KEY }) => {
   //   getAirQuality();
   // }, [data]);
 
-  if (!data) return <p>Loading...</p>;
-
   // useEffect(() => {
   //   getAirQuality();
   // }, [data]);
+
+  if (!data) return <p>Loading...</p>;
+
   return (
-    <div className="m-auto mt-10 max-w-6xl">
-      <h2 className="text-white text-3xl text-center mb-7">
+    <div className="m-auto mt-10 max-w-6xl md:w-[70%]">
+      <h2 className="text-purple-500 text-3xl text-center mb-12 md:hover:text-purple-800 duration-300 md:m-14">
         Current Conditions
       </h2>
 
-      <div className="grid grid-cols-4 gap-8">
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiThermometer size={40} className="text-red-500" />
-          <p className="text-sm text-gray-400">Temperature</p>
-          <p className="text-xl font-semibold">
-            {Math.round(data.main.temp)}°C
-          </p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiWindy size={40} className="text-gray-400" />
-
-          <p className="text-sm text-gray-400">Wind speed </p>
-          <p className="text-xl font-semibold">
-            {Math.round(data.wind.speed)} km/h
-          </p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiDaySunny size={40} className="text-yellow-400" />
-          <p className="text-sm text-gray-400">UV index</p>
-          <p className="text-xl font-semibold">4</p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiHumidity size={40} className="text-blue-400" />
-          <p className="text-sm text-gray-400">Humidity</p>
-          <p className="text-xl font-semibold">{data.main.humidity}%</p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiRain size={40} className="text-gray-500" />
-          <p className="text-sm text-gray-400">Precipitation</p>
-          <p className="text-xl font-semibold">
-            {precipitation > 0 ? `${precipitation} mm` : "No precipitation"}
-          </p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiBarometer size={40} className="text-blue-300" />
-
-          <p className="text-sm text-gray-400">Pressure</p>
-          <p className="text-xl font-semibold">{data.main.pressure} hPa</p>
-        </div>
-
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiSunrise size={40} className="text-yellow-200" />
-
-          <p className="text-sm text-gray-400">Sunrise</p>
-          <p className="text-xl font-semibold">
-            {new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-            {/* {formatTimeWithOffset(data.sys.sunrise, data.timezone)} */}
-          </p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiSunset size={40} className="text-orange-500" />
-
-          <p className="text-sm text-gray-400">Sunset</p>
-          <p className="text-xl font-semibold">
-            {new Date(data.sys.sunset * 1000).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-            {/* {formatTimeWithOffset(data.sys.sunset, data.timezone)} */}
-          </p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg col-span-2 backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <WiDust size={40} />
-
-          <p className="text-sm text-gray-400">Air Quality</p>
-          <p className="text-xl font-semibold">
-            {airData?.list?.[0]?.main?.aqi}{" "}
-            {getAQILabel(airData?.list?.[0]?.main?.aqi)}
-          </p>
-        </div>
-        <div className="text-white bg-white/10 p-5 rounded-lg col-span-2 backdrop-blur-md hover:bg-white/20 transition hover:scale-95 duration-300">
-          <ImEye size={35} className="text-green-400" />
-
-          <p className="text-sm text-gray-400">Visibility</p>
-          <p className="text-xl font-semibold">
-            {(data.visibility / 1000).toFixed(1) + "km"}
-          </p>
-        </div>
+      {/* <WeatherConditionCard data={data} /> */}
+      <div className="grid grid-cols-2 gap-8">
+        {weatherConditions.map((condition) => (
+          <WeatherConditionCard
+            id={condition.id}
+            icon={condition.icon}
+            name={condition.name}
+            value={condition.value}
+          />
+        ))}
       </div>
     </div>
   );

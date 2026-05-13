@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaCity } from "react-icons/fa";
 
-const SearchBar = ({
-  onSearch,
-  fetchWeatherData,
-  cityWeather,
-  setCityWeather,
-}) => {
+const SearchBar = ({ onSearch }) => {
   const [inputValue, setInputValue] = useState("");
   const handleSubmit = () => {
     if (!inputValue.trim()) return;
@@ -19,13 +14,18 @@ const SearchBar = ({
       handleSubmit();
     }
   };
-  const handleChangeCity = (e) => {
-    setCityWeather(e.target.value);
-  };
+  // const handleChangeCity = (e) => {
+  //   setInputValue(e.target.value);
+  //   // setCityName(e.target.value);
+  //   // setCityWeather(e.target.value);
+  // };
 
   return (
-    <div className="flex justify-center">
-      <div className="w-[70%] flex items-center  bg-white/10 rounded-xl overflow-hidden shadow-md backdrop-blur-md focus-within:ring-2 focus-within:ring-purple-500 transition-all duration-300 hover:bg-white/20 cursor-text">
+    <div
+      // className="flex w-full max-w-md px-4"
+      className="flex justify-center mb-14"
+    >
+      <div className="w-full flex items-center  bg-white/10 rounded-xl overflow-hidden shadow-md backdrop-blur-md focus-within:ring-2 focus-within:ring-purple-500 transition-all duration-300 md:hover:bg-white/20 cursor-text md:w-[70%] lg:">
         <input
           type="text"
           value={inputValue}
@@ -34,7 +34,7 @@ const SearchBar = ({
           // value={city}
           // onChange={handleChangeCity}
           placeholder="Enter city (e.g. London)"
-          className="flex-1 px-4 py-3 bg-transparent outline-none text-white placeholder-gray-400"
+          className="flex-1 px-4 py-3 w-full bg-transparent outline-none text-white placeholder-gray-400"
         />
 
         <button

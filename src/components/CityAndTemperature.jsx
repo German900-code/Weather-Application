@@ -4,7 +4,7 @@ import { FaLocationDot, FaTemperatureHalf } from "react-icons/fa6";
 const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
   const [city, setCity] = useState("");
   const [cityTime, setCityTime] = useState(null);
-
+  const [thermometerColor, setThermometerColor] = useState("");
   // const nowUTC = new Date().getTime();
 
   // const date = new Date(data.dt * 10000);
@@ -15,6 +15,15 @@ const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
   //   day: "numeric",
   //   timeZone: "Europe/Vilnius",
   // }).format(new Date());
+
+  const changeThermColor = (temp) => {
+    if (temp > 25) {
+      return "text-red-500";
+    } else if (temp > 10) {
+      return "text-orange-400";
+    }
+    return "text-blue-400";
+  };
   useEffect(() => {
     if (!data) return null;
 
@@ -34,18 +43,19 @@ const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
     };
 
     updateTime();
+    changeThermColor(data.main.temp);
     const interval = setInterval(updateTime, 1000);
 
     return () => clearInterval(interval);
   }, [data]);
 
   return (
-    <div className="mt-16 flex items-start  gap-5 justify-between ">
+    <div className="mt-10 flex flex-wrap items-start  gap-7 justify-between md:justify-evenly">
       <div className="flex items-center gap-3 flex-col">
-        <div className="flex flex-row gap-3 items-center">
-          <FaLocationDot className="text-red-600 text-3xl hover:scale-125 duration-200" />
-          <h2 className="text-4xl text-white font-bold">
-            {data.name}, {data.sys.country}
+        <div className="flex flex-row gap-3 items-center w-full">
+          <FaLocationDot className="text-red-600 text-2xl md:hover:scale-125 duration-200 " />
+          <h2 className="text-3xl text-purple-500 font-bold md:hover:text-purple-800 duration-300 ">
+            {data?.name}, {data?.sys?.country}
           </h2>
         </div>
         <div className="">
@@ -56,14 +66,16 @@ const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-3 flex-col">
-        <div className="flex items-center gap-3">
-          <FaTemperatureHalf className="text-orange-400 text-3xl hover:scale-125 duration-200" />
-          <p className="text-white text-4xl font-bold">
-            Temperature: {Math.round(data.main.temp)}°C
+      <div className="flex items-start gap-2 flex-col md:items-center">
+        <div className="flex items-center gap-2">
+          <FaTemperatureHalf
+            className={`${changeThermColor(data?.main?.temp)} text-2xl md:hover:scale-125 duration-200`}
+          />
+          <p className="text-purple-500 text-3xl font-bold md:hover:text-purple-800 duration-300  ">
+            Temperature: {Math.round(data?.main?.temp)}°C
           </p>
         </div>
-        <div className="">
+        <div>
           <p className="text-gray-400">{data?.weather?.[0].main}</p>
         </div>
       </div>
