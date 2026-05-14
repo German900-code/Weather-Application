@@ -35,20 +35,12 @@ const CurrentConditions = ({ data, API_KEY }) => {
   const UV_API_KEY = import.meta.env.VITE_UV_API_KEY;
 
   const getAQILabel = (aqi) => {
-    switch (aqi) {
-      case 1:
-        return "Good 🟢";
-      case 2:
-        return "Fair 🟡";
-      case 3:
-        return "Moderate 🟠";
-      case 4:
-        return "Poor 🔴";
-      case 5:
-        return "Very Poor 🟣";
-      default:
-        return "Unknown";
-    }
+    if (aqi <= 50) return "Good 🟢";
+    if (aqi <= 100) return "Fair 🟡";
+    if (aqi <= 150) return "Moderate 🟠";
+    if (aqi <= 200) return "Poor 🔴";
+    if (aqi <= 300) return "Very Poor 🟣";
+    return "Hazardous ⚠️";
   };
 
   const getUVLevel = (uv) => {
@@ -76,7 +68,9 @@ const CurrentConditions = ({ data, API_KEY }) => {
       icon: <WiDaySunny size={40} className="text-yellow-400" />,
       name: "UV Index",
       value:
-        uvIndex !== null ? `${uvIndex} ${getUVLevel(uvIndex)}` : "Loading...",
+        uvIndex !== null
+          ? `${Math.floor(uvIndex)} ${getUVLevel(uvIndex)}`
+          : "Loading...",
     },
     {
       id: "humidity",
@@ -118,7 +112,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
       id: "air quality",
       icon: <WiDust size={40} />,
       name: "Air Quality",
-      value: `${airData?.list?.[0]?.main?.aqi} ${getAQILabel(airData?.list?.[0]?.main?.aqi)}`,
+      value: `${Math.floor(airData)} ${getAQILabel(airData)}`,
     },
     {
       id: "visibility",
@@ -203,7 +197,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
   useEffect(() => {
     if (!lat || !lon) return;
 
-    const fetchUVIndex = async (lat, lon) => {
+    const fetchUVAndAirIndex = async (lat, lon) => {
       try {
         const response = await fetch(
           `https://api.weatherapi.com/v1/current.json?key=${UV_API_KEY}&q=${lat},${lon}&aqi=yes`,
@@ -220,31 +214,40 @@ const CurrentConditions = ({ data, API_KEY }) => {
           return;
         }
         console.log("UV Index data: ", data);
-        setUvIndex(Math.floor(data.current.uv));
+        if (data.current.uv) {
+          setUvIndex(data.current.uv);
+        }
+        // setUvIndex(Math.floor(data.current.uv));
+        if (data.current.air_quality.o3) {
+          setAirData(data.current.air_quality.o3);
+        }
+
         console.log("CURRENT UV INDEX: ", data.current.uv);
+        console.log("CURRENT AIR QUALITY: ", data.current.air_quality.o3);
       } catch (error) {
         console.error(error.message);
       }
     };
 
-    async function getAirQuality(lat, lon) {
-      // const { lat, lon } = data.coord;
-      try {
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
-        );
-        if (!response.ok) return;
-        const result = await response.json();
-        console.log("Result of fetch API: ", result);
-        setAirData(result);
-      } catch (error) {
-        console.error(error.message);
-      }
-    }
+    // async function getAirQuality(lat, lon) {
+    //   // const { lat, lon } = data.coord;
+    //   try {
+    //     const response = await fetch(
+    //       `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
+    //     );
+    //     console.log("Response of fetch API AIR POLLUTION: ", response);
+    //     if (!response.ok) return;
+    //     const result = await response.json();
+    //     console.log("Result of fetch API AIR POLLUTION: ", result);
+    //     setAirData(result);
+    //   } catch (error) {
+    //     console.error(error.message);
+    //   }
+    // }
     // const { lat, lon } = data.coord;
 
-    fetchUVIndex(lat, lon);
-    getAirQuality(lat, lon);
+    fetchUVAndAirIndex(lat, lon);
+    // getAirQuality(lat, lon);
   }, [lat, lon]);
 
   // useEffect(() => {

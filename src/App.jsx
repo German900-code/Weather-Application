@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 // import LoadingGif from "./assets/gifs/loading-spinner.gif";
 import LoadingGif from "./assets/gifs/loading-spinner.svg";
 
+import { FaArrowAltCircleUp } from "react-icons/fa";
+import ScrollToTopButton from "./components/ScrollToTopButton";
+
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [cityName, setCityName] = useState(() => {
@@ -17,31 +20,31 @@ function App() {
 
   const API_KEY = import.meta.env.VITE_API_KEY;
 
-  const fetchWeatherData = async (city) => {
-    try {
-      setError(null);
-      setLoading(true);
-      const response = await fetch(
-        // `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=yes`,
-        // `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`,
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-          city,
-        )}&appid=${API_KEY}&units=metric`,
-      );
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
+  // const fetchWeatherData = async (city) => {
+  //   try {
+  //     setError(null);
+  //     setLoading(true);
+  //     const response = await fetch(
+  //       // `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=yes`,
+  //       // `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`,
+  //       `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+  //         city,
+  //       )}&appid=${API_KEY}&units=metric`,
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error(`Response status: ${response.status}`);
+  //     }
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      setWeatherData(data);
-    } catch (error) {
-      console.log(error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     setWeatherData(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setError(error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   // async function fetchWeatherData(city) {
   //   if (!city.trim()) return;
   //   setError(null);
@@ -117,7 +120,7 @@ function App() {
     if (!trimmedCity) return;
 
     setCityName(trimmedCity);
-    fetchWeatherData(trimmedCity);
+    // fetchWeatherData(trimmedCity);
   };
 
   useEffect(() => {
@@ -131,6 +134,31 @@ function App() {
   }, [cityName]);
 
   useEffect(() => {
+    const fetchWeatherData = async (city) => {
+      try {
+        setError(null);
+        setLoading(true);
+        const response = await fetch(
+          // `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=yes`,
+          // `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`,
+          `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+            city,
+          )}&appid=${API_KEY}&units=metric`,
+        );
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        setWeatherData(data);
+      } catch (error) {
+        console.log(error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     if (cityName) {
       fetchWeatherData(cityName);
     }
@@ -194,6 +222,7 @@ function App() {
           )}
         </>
       )}
+      <ScrollToTopButton />
     </div>
   );
 }
