@@ -35,6 +35,7 @@ const ScrollToTopButton = () => {
             right-5
             text-purple-500
             hover:text-purple-600
+            hover:scale-110
             transition-all
             duration-300
             ${visible ? "opacity-100" : "opacity-0 pointer-events-none"} 

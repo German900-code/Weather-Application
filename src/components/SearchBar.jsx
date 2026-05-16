@@ -1,9 +1,16 @@
+import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaCity } from "react-icons/fa";
 
 const SearchBar = ({ onSearch }) => {
   const [inputValue, setInputValue] = useState("");
+
+  const { scrollY } = useScroll();
+
+  const width = useTransform(scrollY, [0, 150], ["70%", "70%"]);
+  const scale = useTransform(scrollY, [0, 150], [1, 0.9]);
+
   const handleSubmit = () => {
     if (!inputValue.trim()) return;
     onSearch(inputValue);
@@ -21,11 +28,17 @@ const SearchBar = ({ onSearch }) => {
   // };
 
   return (
-    <div
+    <motion.header
       // className="flex w-full max-w-md px-4"
-      className="flex justify-center mb-14"
+      className=" flex justify-center mb-14 sticky top-5 z-30"
     >
-      <div className="w-full flex items-center  bg-white/10 rounded-xl overflow-hidden shadow-md backdrop-blur-md focus-within:ring-2 focus-within:ring-purple-500 transition-all duration-300 md:hover:bg-white/20 cursor-text md:w-[70%] lg:">
+      <motion.div
+        style={{ width, scale }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1 }}
+        className="w-full flex items-center  bg-white/10 rounded-xl overflow-hidden shadow-md backdrop-blur-md focus-within:ring-2 focus-within:ring-purple-500 transition-all duration-300 md:hover:bg-white/20 cursor-text md:w-[60%] lg:"
+      >
         <input
           type="text"
           value={inputValue}
@@ -43,8 +56,8 @@ const SearchBar = ({ onSearch }) => {
         >
           🔍 Search
         </button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.header>
   );
 };
 

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState, useMemo } from "react";
 import { FaCloud, FaSun, FaSnowflake, FaMoon } from "react-icons/fa";
 import {
@@ -167,8 +168,11 @@ const WeatherHourly = ({ API_KEY, data }) => {
                 //   typeOfWeather.push(item?.list?.[i]?.weather.main);
                 // }
                 return (
-                  <div
+                  <motion.div
                     key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.7 }}
                     className="min-w-[120px] bg-white/10 p-5 rounded-xl text-center backdrop-blur-md md:hover:bg-white/20 transition transition-transform duration-300 transform will-change-transform transition md:hover:scale-95 duration-300 hover:border-2 border-purple-500 duration-300"
                   >
                     <p className="text-white font-bold mb-3">{time}</p>
@@ -180,7 +184,7 @@ const WeatherHourly = ({ API_KEY, data }) => {
                     </p> */}
                     <p className="text-white font-bold mb-3">{weatherType}</p>
                     <p className="text-white">{Math.round(item.main.temp)}°C</p>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>

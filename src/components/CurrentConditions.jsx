@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import {
   FaTemperatureHalf,
@@ -70,7 +71,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
       value:
         uvIndex !== null
           ? `${Math.floor(uvIndex)} ${getUVLevel(uvIndex)}`
-          : "Loading...",
+          : "N/D",
     },
     {
       id: "humidity",
@@ -121,6 +122,30 @@ const CurrentConditions = ({ data, API_KEY }) => {
       value: `${(data.visibility / 1000).toFixed(1) + "km"}`,
     },
   ];
+
+  const container = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const item = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
   // const fetchUVIndex = async (lat, lon) => {
   //   try {
@@ -263,23 +288,30 @@ const CurrentConditions = ({ data, API_KEY }) => {
   if (!data) return <p>Loading...</p>;
 
   return (
-    <div className="m-auto mt-10 max-w-6xl md:w-[70%]">
+    <main className="m-auto mt-10 max-w-6xl md:w-[70%]">
       <h2 className="text-purple-500 text-3xl text-center mb-12 md:hover:text-purple-800 duration-300 md:m-14">
         Current Conditions
       </h2>
 
       {/* <WeatherConditionCard data={data} /> */}
-      <div className="grid grid-cols-2 gap-8">
+      <motion.div
+        variants={container}
+        className="grid grid-cols-2 gap-8 "
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 120, duration: 0.5 }}
+      >
         {weatherConditions.map((condition) => (
           <WeatherConditionCard
+            item={item}
             id={condition.id}
             icon={condition.icon}
             name={condition.name}
             value={condition.value}
           />
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </main>
   );
 };
 
