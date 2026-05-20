@@ -1,9 +1,9 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 
 const ScrollToTopButton = () => {
   const [visible, setVisible] = useState(false);
-  console.log("IS VISIBLE: ", visible);
 
   useEffect(() => {
     const toggleVisible = () => {
@@ -27,7 +27,22 @@ const ScrollToTopButton = () => {
     });
   };
   return (
-    <button
+    <motion.button
+      initial={{ scale: 0 }}
+      animate={{
+        scale: 1,
+        y: [0, -6, 0],
+      }}
+      transition={{
+        scale: {
+          duration: 1,
+        },
+        y: {
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      }}
       onClick={scrollToTop}
       className={`
             fixed 
@@ -40,18 +55,9 @@ const ScrollToTopButton = () => {
             duration-300
             ${visible ? "opacity-100" : "opacity-0 pointer-events-none"} 
       `}
-      //   className={`
-      //         fixed
-      //         bottom-5
-      //         right-5
-      //         text-blue-500
-      //         hover:text-blue-600
-      //         transition-all
-      //         duration-300
-      //         ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
       <FaArrowAltCircleUp className="text-purple-500 " size={40} />
-    </button>
+    </motion.button>
   );
 };
 

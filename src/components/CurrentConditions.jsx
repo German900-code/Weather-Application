@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import WeatherConditionCard from "./WeatherConditionCard";
 import {
   FaTemperatureHalf,
   FaWind,
@@ -22,11 +23,12 @@ import {
   WiDaySunny,
 } from "react-icons/wi";
 import { ImEye } from "react-icons/im";
-import WeatherConditionCard from "./WeatherConditionCard";
 
-const CurrentConditions = ({ data, API_KEY }) => {
+const CurrentConditions = ({ data }) => {
   const [airData, setAirData] = useState(null);
   const [uvIndex, setUvIndex] = useState(null);
+
+  // Extracting latitude and longitude from the weather data, as well as rain and snow data for precipitation calculation
   const lat = data?.coord?.lat;
   const lon = data?.coord?.lon;
   const rain = data.rain?.["1h"];
@@ -35,6 +37,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
 
   const UV_API_KEY = import.meta.env.VITE_UV_API_KEY;
 
+  // Function to get the air quality label based on the AQI value
   const getAQILabel = (aqi) => {
     if (aqi <= 50) return "Good 🟢";
     if (aqi <= 100) return "Fair 🟡";
@@ -44,6 +47,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
     return "Hazardous ⚠️";
   };
 
+  // Function to get the UV level label based on the UV index value
   const getUVLevel = (uv) => {
     if (uv <= 2) return "Low 🟢";
     if (uv <= 5) return "Moderate 🟡";
@@ -51,6 +55,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
     if (uv <= 10) return "Very High 🔴";
     return "Extreme 🟣";
   };
+
   const weatherConditions = [
     {
       id: "temperature",
@@ -123,6 +128,7 @@ const CurrentConditions = ({ data, API_KEY }) => {
     },
   ];
 
+  // Framer Motion variants for container and item animations
   const container = {
     hidden: {},
     visible: {
@@ -147,89 +153,16 @@ const CurrentConditions = ({ data, API_KEY }) => {
     },
   };
 
-  // const fetchUVIndex = async (lat, lon) => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://api.weatherapi.com/v1/current.json?key=${UV_API_KEY}&q=${lat},${lon}&aqi=yes`,
-  //     );
-  //     console.log("Response of fetch UV Index: ", response);
-  //     const data = await response.json();
-  //     console.log("UV DATA: ", data);
-
-  //     if (!response.ok) {
-  //       console.log(
-  //         "Failed to fetch UV index. Response status: ",
-  //         response.status,
-  //       );
-  //       return;
-  //     }
-  //     console.log("UV Index data: ", data);
-  //     setUvIndex(Math.floor(data.current.uv));
-  //     console.log("CURRENT UV INDEX: ", data.current.uv);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
-
-  // async function getAirQuality(lat, lon) {
-  //   // const { lat, lon } = data.coord;
-  //   try {
-  //     const response = await fetch(
-  //       `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
-  //     );
-  //     if (!response.ok) return;
-  //     const result = await response.json();
-  //     console.log("Result of fetch API: ", result);
-  //     setAirData(result);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // }
-  // const getAQILabel = (aqi) => {
-  //   switch (aqi) {
-  //     case 1:
-  //       return "Good 🟢";
-  //     case 2:
-  //       return "Fair 🟡";
-  //     case 3:
-  //       return "Moderate 🟠";
-  //     case 4:
-  //       return "Poor 🔴";
-  //     case 5:
-  //       return "Very Poor 🟣";
-  //     default:
-  //       return "Unknown";
-  //   }
-  // };
-
-  // const getUVLevel = (uv) => {
-  //   if (uv <= 2) return "Low 🟢";
-  //   if (uv <= 5) return "Moderate 🟡";
-  //   if (uv <= 7) return "High 🟠";
-  //   if (uv <= 10) return "Very High 🔴";
-  //   return "Extreme 🟣";
-  // };
-
-  function formatTimeWithOffset(unixTime, timezoneOffsetInSeconds) {
-    const localUnixTime = unixTime + timezoneOffsetInSeconds;
-    const date = new Date(localUnixTime * 1000);
-    return date.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }
-
   useEffect(() => {
     if (!lat || !lon) return;
 
+    // Function to fetch UV index and air quality data based on latitude and longitude
     const fetchUVAndAirIndex = async (lat, lon) => {
       try {
         const response = await fetch(
           `https://api.weatherapi.com/v1/current.json?key=${UV_API_KEY}&q=${lat},${lon}&aqi=yes`,
         );
-        console.log("Response of fetch UV Index: ", response);
         const data = await response.json();
-        console.log("UV DATA: ", data);
 
         if (!response.ok) {
           console.log(
@@ -238,52 +171,19 @@ const CurrentConditions = ({ data, API_KEY }) => {
           );
           return;
         }
-        console.log("UV Index data: ", data);
         if (data.current.uv) {
           setUvIndex(data.current.uv);
         }
-        // setUvIndex(Math.floor(data.current.uv));
         if (data.current.air_quality.o3) {
           setAirData(data.current.air_quality.o3);
         }
-
-        console.log("CURRENT UV INDEX: ", data.current.uv);
-        console.log("CURRENT AIR QUALITY: ", data.current.air_quality.o3);
       } catch (error) {
         console.error(error.message);
       }
     };
 
-    // async function getAirQuality(lat, lon) {
-    //   // const { lat, lon } = data.coord;
-    //   try {
-    //     const response = await fetch(
-    //       `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
-    //     );
-    //     console.log("Response of fetch API AIR POLLUTION: ", response);
-    //     if (!response.ok) return;
-    //     const result = await response.json();
-    //     console.log("Result of fetch API AIR POLLUTION: ", result);
-    //     setAirData(result);
-    //   } catch (error) {
-    //     console.error(error.message);
-    //   }
-    // }
-    // const { lat, lon } = data.coord;
-
     fetchUVAndAirIndex(lat, lon);
-    // getAirQuality(lat, lon);
   }, [lat, lon]);
-
-  // useEffect(() => {
-  //   if (!data) return;
-
-  //   getAirQuality();
-  // }, [data]);
-
-  // useEffect(() => {
-  //   getAirQuality();
-  // }, [data]);
 
   if (!data) return <p>Loading...</p>;
 
@@ -293,8 +193,8 @@ const CurrentConditions = ({ data, API_KEY }) => {
         Current Conditions
       </h2>
 
-      {/* <WeatherConditionCard data={data} /> */}
       <motion.div
+        // Framer Motion container with staggered children animation for the weather condition cards
         variants={container}
         className="grid grid-cols-2 gap-8 "
         initial={{ opacity: 0, y: 30 }}

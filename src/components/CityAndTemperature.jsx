@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaLocationDot, FaTemperatureHalf } from "react-icons/fa6";
 
-const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
-  const [city, setCity] = useState("");
+const CityAndTemperature = ({ data }) => {
   const [cityTime, setCityTime] = useState(null);
-  const [thermometerColor, setThermometerColor] = useState("");
-  // const nowUTC = new Date().getTime();
-
-  // const date = new Date(data.dt * 10000);
-  // const formattedDate = new Intl.DateTimeFormat("en-GB", {
-  //   weekday: "long",
-  //   year: "numeric",
-  //   month: "long",
-  //   day: "numeric",
-  //   timeZone: "Europe/Vilnius",
-  // }).format(new Date());
 
   const changeThermColor = (temp) => {
     if (temp > 25) {
@@ -27,6 +15,7 @@ const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
   useEffect(() => {
     if (!data) return null;
 
+    // Function to update the city time based on the timezone offset
     const updateTime = () => {
       const time = new Date(Date.now() + data.timezone * 1000);
 
@@ -59,11 +48,7 @@ const CityAndTemperature = ({ data, cityWeather, setCityWeather }) => {
           </h2>
         </div>
         <div className="">
-          <p className="text-gray-400">
-            {cityTime}
-            {/* Sunday, April 26, {new Date().getHours().toLocaleString()} */}
-            {/* {formattedDate()} */}
-          </p>
+          <p className="text-gray-400">{cityTime}</p>
         </div>
       </div>
       <div className="flex items-start gap-2 flex-col md:items-center">
