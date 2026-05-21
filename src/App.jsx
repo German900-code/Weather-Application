@@ -69,6 +69,9 @@ function App() {
       fetchWeatherData(cityName);
     }
   }, [cityName]);
+
+  console.log(weatherData);
+
   return (
     <div className="w-[90%] m-auto ">
       <h1 className="text-center text-purple-500 mt-10 text-3xl mb-14 font-bold md:hover:text-purple-800 duration-300 lg:text-5xl">

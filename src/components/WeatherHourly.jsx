@@ -61,11 +61,13 @@ const WeatherHourly = ({ API_KEY, data }) => {
   if (loading) return;
   const now = new Date().getTime();
 
+  // Filtering the hourly data to include only the next 48 hours
   const nextTwoDays =
     weatherByHours?.filter(
       (item) => item.dt * 1000 <= now + 2 * 24 * 60 * 60 * 1000,
     ) || [];
 
+  // Grouping the hourly data by day for easier rendering
   const groupedData = nextTwoDays.reduce((acc, item) => {
     const date = new Date(item.dt * 1000);
 

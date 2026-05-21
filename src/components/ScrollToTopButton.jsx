@@ -28,21 +28,6 @@ const ScrollToTopButton = () => {
   };
   return (
     <motion.button
-      initial={{ scale: 0 }}
-      animate={{
-        scale: 1,
-        y: [0, -6, 0],
-      }}
-      transition={{
-        scale: {
-          duration: 1,
-        },
-        y: {
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        },
-      }}
       onClick={scrollToTop}
       className={`
             fixed 
@@ -50,7 +35,8 @@ const ScrollToTopButton = () => {
             right-5
             text-purple-500
             hover:text-purple-600
-            hover:scale-110
+            md:hover:scale-110
+            lg:hover:scale-125
             transition-all
             duration-300
             ${visible ? "opacity-100" : "opacity-0 pointer-events-none"} 

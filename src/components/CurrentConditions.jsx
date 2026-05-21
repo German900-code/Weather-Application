@@ -56,6 +56,22 @@ const CurrentConditions = ({ data }) => {
     return "Extreme 🟣";
   };
 
+  // Function to format the sunrise and sunset times based on the city's timezone
+  const formatLocalTime = (timestamp, timezoneOffsetSeconds) => {
+    if (!timezoneOffsetSeconds && timezoneOffsetSeconds !== 0) {
+      console.warn("No timezone data, using UTC");
+      timezoneOffsetSeconds = 0;
+    }
+
+    const localTimestamp = (timestamp + timezoneOffsetSeconds) * 1000;
+    const date = new Date(localTimestamp);
+
+    const hours = date.getUTCHours().toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+    return `${hours}:${minutes}`;
+  };
+
   const weatherConditions = [
     {
       id: "temperature",
@@ -100,19 +116,13 @@ const CurrentConditions = ({ data }) => {
       id: "sunrise",
       icon: <WiSunrise size={40} className="text-yellow-200" />,
       name: "Sunrise",
-      value: `${new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`,
+      value: formatLocalTime(data.sys.sunrise, data.timezone),
     },
     {
       id: "sunset",
       icon: <WiSunset size={40} className="text-orange-500" />,
       name: "Sunset",
-      value: `${new Date(data.sys.sunset * 1000).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`,
+      value: formatLocalTime(data.sys.sunset, data.timezone),
     },
     {
       id: "air quality",

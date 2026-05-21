@@ -12,27 +12,59 @@ const CityAndTemperature = ({ data }) => {
     }
     return "text-blue-400";
   };
-  useEffect(() => {
-    if (!data) return null;
 
-    // Function to update the city time based on the timezone offset
+  useEffect(() => {
+    if (!data || data.timezone === undefined) return;
+
     const updateTime = () => {
-      const time = new Date(Date.now() + data.timezone * 1000);
+      // Getting the current UTC time in seconds
+      const nowUTC = Math.floor(Date.now() / 1000);
+
+      // Adding the city's timezone offset (data.timezone in seconds)
+      const localTimestamp = (nowUTC + data.timezone) * 1000;
+
+      const localDate = new Date(localTimestamp);
+
+      // Formatting manually (to avoid issues with the browser's local timezone)
+      const weekdays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      // Extracting date components in UTC to ensure correct local time display
+      const weekday = weekdays[localDate.getUTCDay()];
+      const day = localDate.getUTCDate().toString().padStart(2, "0");
+      const month = months[localDate.getUTCMonth()];
+      const year = localDate.getUTCFullYear();
+      const hours = localDate.getUTCHours().toString().padStart(2, "0");
+      const minutes = localDate.getUTCMinutes().toString().padStart(2, "0");
+      const seconds = localDate.getUTCSeconds().toString().padStart(2, "0");
 
       setCityTime(
-        time.toLocaleString("en-GB", {
-          weekday: "long",
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        `${weekday}, ${day} ${month} ${year}, ${hours}:${minutes}:${seconds}`,
       );
     };
 
     updateTime();
-    changeThermColor(data.main.temp);
     const interval = setInterval(updateTime, 1000);
 
     return () => clearInterval(interval);

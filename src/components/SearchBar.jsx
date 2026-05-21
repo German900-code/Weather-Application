@@ -42,12 +42,7 @@ const SearchBar = ({ onSearch }) => {
             ease: "easeInOut",
           },
         }}
-        // First styles before animation
-        // style={{ scale, width }}
-        // initial={{ scale: 0 }}
-        // animate={{ scale: 1 }}
-        // transition={{ duration: 1 }}
-        className="w-full max-w-full md:max-w-[60%] mx-auto md:px-4 "
+        className="w-full max-w-full md:max-w-[60%] mx-auto md:px-4"
       >
         <div className="flex items-center bg-white/10 rounded-xl overflow-hidden shadow-md backdrop-blur-md focus-within:ring-2 focus-within:ring-purple-500 transition-all duration-300 md:hover:bg-white/20 focus-within:shadow-purple-500/30">
           <input
@@ -69,35 +64,6 @@ const SearchBar = ({ onSearch }) => {
       </motion.div>
     </motion.header>
   );
-
-  // My original code
-  // return (
-  //   <motion.header className=" flex justify-center mb-14 sticky top-5 z-30">
-  //     <motion.div
-  //       style={{ width, scale }}
-  //       initial={{ scale: 0 }}
-  //       animate={{ scale: 1 }}
-  //       transition={{ duration: 1 }}
-  //       className="w-full flex items-center  bg-white/10 rounded-xl overflow-hidden shadow-md backdrop-blur-md focus-within:ring-2 focus-within:ring-purple-500 transition-all duration-300 md:hover:bg-white/20 cursor-text lg:w-[60%]"
-  //     >
-  //       <input
-  //         type="text"
-  //         value={inputValue}
-  //         onChange={(e) => setInputValue(e.target.value)}
-  //         onKeyDown={handleKeyDown}
-  //         placeholder="Enter city (e.g. London)"
-  //         className="flex-1 px-4 py-3 w-full bg-transparent outline-none text-white placeholder-gray-400 "
-  //       />
-
-  //       <button
-  //         className="px-5 py-3 bg-purple-500 hover:bg-purple-600 transition text-white flex items-center gap-2 "
-  //         onClick={handleSubmit}
-  //       >
-  //         🔍 Search
-  //       </button>
-  //     </motion.div>
-  //   </motion.header>
-  // );
 };
 
 export default SearchBar;
