@@ -17,12 +17,20 @@ import {
   WiNightClear,
 } from "react-icons/wi";
 import { IoMoonOutline } from "react-icons/io5";
+import Sun from "../assets/images/sun.svg";
+import Cloud from "../assets/images/cloud.svg";
+import CloudWithRain from "../assets/images/cloud-with-rain.svg";
+import CloudWithSnow from "../assets/images/cloud-with-snow.svg";
+import CloudWithLightning from "../assets/images/cloud-with-lightning-and-rain.svg";
+import SunBehindCloud from "../assets/images/sun-behind-cloud.svg";
+import SunBehindRainCloud from "../assets/images/sun-behind-rain-cloud.svg";
 import LoadingGif from "../assets/gifs/loading-spinner.svg";
 
 const WeatherHourly = ({ API_KEY, data }) => {
   const [weatherByHours, setWeatherByHours] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  console.log("Sun icon", Sun);
   useEffect(() => {
     async function getWeatherHourly(lat, lon) {
       setLoading(true);
@@ -48,6 +56,23 @@ const WeatherHourly = ({ API_KEY, data }) => {
 
     getWeatherHourly(lat, lon);
   }, [data]);
+
+  const getWeatherIcon = (weatherType) => {
+    switch (weatherType) {
+      case "Clear":
+        return Sun;
+      case "Clouds":
+        return Cloud;
+      case "Rain":
+        return CloudWithRain;
+      case "Snow":
+        return CloudWithSnow;
+      case "Thunderstorm":
+        return CloudWithLightning;
+      default:
+        return Sun;
+    }
+  };
 
   if (loading)
     return (
@@ -91,7 +116,7 @@ const WeatherHourly = ({ API_KEY, data }) => {
       </h2>
       <div className="flex flex-wrap justify-evenly gap-5">
         {Object.keys(groupedData).map((day) => (
-          <div key={day} className="w-full">
+          <motion.div key={day} className="w-full" whileHover={{ y: -5 }}>
             <h2 className="text-purple-500 text-xl mb-4 font-bold">{day}</h2>
 
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide  ">
@@ -111,17 +136,23 @@ const WeatherHourly = ({ API_KEY, data }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.7 }}
-                    className="min-w-[120px] bg-white/10 p-5 rounded-xl text-center backdrop-blur-md md:hover:bg-white/20 transition transition-transform duration-300 transform will-change-transform transition md:hover:scale-95 duration-300 hover:border-2 border-purple-500 duration-300"
+                    className="min-w-[120px] bg-white/10 p-5 rounded-xl text-center backdrop-blur-md md:hover:bg-white/20 transition-all  duration-300 transform will-change-transform  md:hover:scale-95 hover:border-2 border-purple-500 "
                   >
                     <p className="text-white font-bold mb-3">{time}</p>
 
-                    <p className="text-white font-bold mb-3">{weatherType}</p>
+                    <img
+                      src={getWeatherIcon(weatherType)}
+                      alt={weatherType}
+                      className="mx-auto mb-3"
+                      width={40}
+                      height="auto"
+                    />
                     <p className="text-white">{Math.round(item.main.temp)}°C</p>
                   </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
