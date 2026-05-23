@@ -30,7 +30,6 @@ const WeatherHourly = ({ API_KEY, data }) => {
   const [weatherByHours, setWeatherByHours] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log("Sun icon", Sun);
   useEffect(() => {
     async function getWeatherHourly(lat, lon) {
       setLoading(true);
