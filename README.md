@@ -2,8 +2,6 @@
 
 A modern weather application built with React + Vite featuring a clean UI, smooth animations, and real-time weather data.
 
----
-
 ## ✨ Features
 
 - 🔍 Search weather by city
@@ -16,8 +14,6 @@ A modern weather application built with React + Vite featuring a clean UI, smoot
 - 📱 Mobile-friendly design
 - 🚀 Fast performance powered by Vite
 
----
-
 ## 🛠️ Tech Stack
 
 - ⚛️ React
@@ -27,27 +23,21 @@ A modern weather application built with React + Vite featuring a clean UI, smoot
 - 🌍 Weather API
 - 🔗 GitHub + Vercel
 
----
-
 ## 📸 Preview
 
-/assets/preview.png
-
----
+/assets/preview/
 
 ## 🚀 Live Demo
 
 🌐 Deployment:
 
-https://your-project.vercel.app
-
----
+https://weather-application-omega-flax.vercel.app/
 
 ## 📦 Installation
 
 Clone the repository:
 
-git clone https://github.com/your-username/weather-app.git
+git clone https://github.com/German900-code/weather-app.git
 
 Navigate to the project folder:
 
@@ -61,21 +51,15 @@ Start the development server:
 
 npm run dev
 
----
-
 ## 🔑 Environment Variables
 
 Create a `.env` file:
 
 VITE_API_KEY=your_api_key
 
----
-
 ## 🏗️ Build
 
 npm run build
-
----
 
 ## ☁️ Deployment
 
@@ -85,35 +69,24 @@ This project can be easily deployed using:
 - Netlify
 - GitHub Pages
 
----
-
 ## 📂 Project Structure
 
 src/
 ├── components/
 ├── assets/
-├── styles/
 ├── App.jsx
 └── main.jsx
 
----
-
 ## 🎯 Future Improvements
 
-- 🌍 Geolocation support
 - 📅 Weather forecast
 - 🌙 Dark mode
-- 📊 Weather charts
 - 🧊 Enhanced animations
 - 🔔 Notifications
 
----
-
 ## 👨‍💻 Author
 
-Made with ❤️ by German
-
----
+Made with ❤️ by German Voloshyn
 
 ## ⭐ Support
 
