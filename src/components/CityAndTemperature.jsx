@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaLocationDot, FaTemperatureHalf } from "react-icons/fa6";
+import { formatTemperature } from "../utils/units";
 
-const CityAndTemperature = ({ data }) => {
+const CityAndTemperature = ({ data, units }) => {
   const [cityTime, setCityTime] = useState(null);
 
   const changeThermColor = (temp) => {
@@ -89,7 +90,8 @@ const CityAndTemperature = ({ data }) => {
             className={`${changeThermColor(data?.main?.temp)} text-2xl md:hover:scale-125 duration-200`}
           />
           <p className="text-purple-500 text-3xl font-bold md:hover:text-purple-800 duration-300  ">
-            Temperature: {Math.round(data?.main?.temp)}°C
+            Temperature: {formatTemperature(data?.main?.temp, units)}{" "}
+            {units === "metric" ? "°C" : "°F"}
           </p>
         </div>
         <div>

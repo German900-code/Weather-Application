@@ -2,6 +2,13 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import WeatherConditionCard from "./WeatherConditionCard";
 import {
+  formatTemperature,
+  formatWindSpeed,
+  getTemperatureUnit,
+  getWindSpeedUnit,
+} from "../utils/units";
+
+import {
   FaTemperatureHalf,
   FaWind,
   FaSun,
@@ -24,7 +31,7 @@ import {
 } from "react-icons/wi";
 import { ImEye } from "react-icons/im";
 
-const CurrentConditions = ({ data }) => {
+const CurrentConditions = ({ data, units }) => {
   const [airData, setAirData] = useState(null);
   const [uvIndex, setUvIndex] = useState(null);
 
@@ -77,13 +84,13 @@ const CurrentConditions = ({ data }) => {
       id: "temperature",
       icon: <WiThermometer size={40} className="text-red-500" />,
       name: "Temperature",
-      value: `${Math.round(data.main.temp)}°C`,
+      value: `${formatTemperature(data.main.temp, units)} ${getTemperatureUnit(units)}`,
     },
     {
       id: "wind",
       icon: <WiWindy size={40} className="text-gray-400" />,
       name: "Wind speed",
-      value: `${Math.round(data.wind.speed)} km/h`,
+      value: `${formatWindSpeed(data.wind.speed, units)} ${getWindSpeedUnit(units)}`,
     },
     {
       id: "uv",

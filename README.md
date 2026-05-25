@@ -72,8 +72,9 @@ This project can be easily deployed using:
 ## 📂 Project Structure
 
 src/
-├── components/
 ├── assets/
+├── components/
+├── utils/
 ├── App.jsx
 └── main.jsx
 

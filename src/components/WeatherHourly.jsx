@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { getTemperatureUnit, formatTemperature } from "../utils/units";
 import { FaCloud, FaSun, FaSnowflake, FaMoon } from "react-icons/fa";
 import {
   WiCloudy,
@@ -26,7 +27,7 @@ import SunBehindCloud from "../assets/images/sun-behind-cloud.svg";
 import SunBehindRainCloud from "../assets/images/sun-behind-rain-cloud.svg";
 import LoadingGif from "../assets/gifs/loading-spinner.svg";
 
-const WeatherHourly = ({ API_KEY, data }) => {
+const WeatherHourly = ({ API_KEY, data, units }) => {
   const [weatherByHours, setWeatherByHours] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -146,7 +147,10 @@ const WeatherHourly = ({ API_KEY, data }) => {
                       width={40}
                       height="auto"
                     />
-                    <p className="text-white">{Math.round(item.main.temp)}°C</p>
+                    <p className="text-white">
+                      {formatTemperature(item.main.temp, units)}
+                      {units === "metric" ? " °C" : " °F"}
+                    </p>
                   </motion.div>
                 );
               })}

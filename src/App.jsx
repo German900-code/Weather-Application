@@ -11,6 +11,7 @@ import LoadingGif from "./assets/gifs/loading-spinner.svg";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
+  const [units, setUnits] = useState("metric");
   // State variable to hold the current city name, initialized from localStorage if available
   const [cityName, setCityName] = useState(() => {
     const savedCityName = localStorage.getItem("savedCityName");
@@ -27,6 +28,10 @@ function App() {
     if (!trimmedCity) return;
 
     setCityName(trimmedCity);
+  };
+
+  const toggleUnits = () => {
+    setUnits((prevUnits) => (prevUnits === "metric" ? "imperial" : "metric"));
   };
 
   // Save cityName to localStorage whenever it changes
@@ -76,7 +81,11 @@ function App() {
         Weather Forecast
       </h1>
 
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar
+        onSearch={handleSearch}
+        units={units}
+        toggleUnits={toggleUnits}
+      />
 
       {loading && (
         <div
@@ -105,9 +114,14 @@ function App() {
               <CityAndTemperature
                 data={weatherData}
                 setCityName={setCityName}
+                units={units}
               />
-              <CurrentConditions data={weatherData} />
-              <WeatherHourly data={weatherData} API_KEY={API_KEY} />
+              <CurrentConditions data={weatherData} units={units} />
+              <WeatherHourly
+                data={weatherData}
+                API_KEY={API_KEY}
+                units={units}
+              />
             </>
           )}
         </>
