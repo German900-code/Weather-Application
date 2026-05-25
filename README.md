@@ -6,6 +6,7 @@ A modern weather application built with React + Vite featuring a clean UI, smoot
 
 - 🔍 Search weather by city
 - 🌡️ Real-time temperature data
+- 🔁 Switching between Celsius and Fahrenheit
 - ☁️ Current weather conditions
 - 💨 Wind speed information
 - 💧 Humidity tracking
@@ -37,7 +38,7 @@ https://weather-application-omega-flax.vercel.app/
 
 Clone the repository:
 
-git clone https://github.com/German900-code/weather-app.git
+git clone https://github.com/German900-code/Weather-Application
 
 Navigate to the project folder:
 
