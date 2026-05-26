@@ -86,12 +86,18 @@ const SearchBar = ({ onSearch, units, toggleUnits }) => {
             </button>
           </div>
 
-          <button
-            onClick={toggleUnits}
-            className="min-w-[72px] px-4 py-3 bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
-            {units === "metric" ? "°C" : "°F"}
-          </button>
+          <div className="relative group">
+            <button
+              onClick={toggleUnits}
+              className="min-w-[72px] w-full px-4 py-3 bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              {units === "metric" ? "°C" : "°F"}
+            </button>
+
+            <div className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-black/80 px-3 py-1.5 text-sm text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              Switch temperature unit
+            </div>
+          </div>
 
           {/* <button
             onClick={toggleUnits}
