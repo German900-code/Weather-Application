@@ -30,6 +30,9 @@ import {
   WiDaySunny,
 } from "react-icons/wi";
 import { ImEye } from "react-icons/im";
+import { getAQILabel } from "../utils/airQuality";
+import { getUVLevel } from "../utils/uvIndex";
+import { formatLocalTime } from "../utils/time";
 
 const CurrentConditions = ({ data, units }) => {
   const [airData, setAirData] = useState(null);
@@ -43,41 +46,6 @@ const CurrentConditions = ({ data, units }) => {
   const precipitation = (rain ?? 0) + (snow ?? 0);
 
   const UV_API_KEY = import.meta.env.VITE_UV_API_KEY;
-
-  // Function to get the air quality label based on the AQI value
-  const getAQILabel = (aqi) => {
-    if (aqi <= 50) return "Good 🟢";
-    if (aqi <= 100) return "Fair 🟡";
-    if (aqi <= 150) return "Moderate 🟠";
-    if (aqi <= 200) return "Poor 🔴";
-    if (aqi <= 300) return "Very Poor 🟣";
-    return "Hazardous ⚠️";
-  };
-
-  // Function to get the UV level label based on the UV index value
-  const getUVLevel = (uv) => {
-    if (uv <= 2) return "Low 🟢";
-    if (uv <= 5) return "Moderate 🟡";
-    if (uv <= 7) return "High 🟠";
-    if (uv <= 10) return "Very High 🔴";
-    return "Extreme 🟣";
-  };
-
-  // Function to format the sunrise and sunset times based on the city's timezone
-  const formatLocalTime = (timestamp, timezoneOffsetSeconds) => {
-    if (!timezoneOffsetSeconds && timezoneOffsetSeconds !== 0) {
-      console.warn("No timezone data, using UTC");
-      timezoneOffsetSeconds = 0;
-    }
-
-    const localTimestamp = (timestamp + timezoneOffsetSeconds) * 1000;
-    const date = new Date(localTimestamp);
-
-    const hours = date.getUTCHours().toString().padStart(2, "0");
-    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-
-    return `${hours}:${minutes}`;
-  };
 
   const weatherConditions = [
     {

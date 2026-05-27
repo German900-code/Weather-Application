@@ -89,25 +89,6 @@ const ScrollToTopButton = () => {
         />
       </div>
     </div>
-
-    // My original code before adding tooltip
-    // <motion.button
-    //   onClick={scrollToTop}
-    //   className={`
-    //         fixed
-    //         bottom-5
-    //         right-5
-    //         text-purple-500
-    //         hover:text-purple-600
-    //         md:hover:scale-110
-    //         lg:hover:scale-125
-    //         transition-all
-    //         duration-300
-    //         ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}
-    //   `}
-    // >
-    //   <FaArrowAltCircleUp className="text-purple-500 " size={40} />
-    // </motion.button>
   );
 };
 
