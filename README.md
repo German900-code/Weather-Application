@@ -28,6 +28,22 @@ A modern weather application built with React + Vite featuring a clean UI, smoot
 
 /assets/preview/
 
+Mobile version:
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)
+
+PC version:
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+![alt text](image-5.png)
+
 ## 🚀 Live Demo
 
 🌐 Deployment:
