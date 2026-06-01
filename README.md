@@ -14,6 +14,7 @@ A modern weather application built with React + Vite featuring a clean UI, smoot
 - ⚡ Smooth animations
 - 📱 Mobile-friendly design
 - 🚀 Fast performance powered by Vite
+- 🌐 Use current location to fetch real-time weather data
 
 ## 🛠️ Tech Stack
 
