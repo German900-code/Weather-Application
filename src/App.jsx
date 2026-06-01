@@ -6,6 +6,8 @@ import CityAndTemperature from "./components/CityAndTemperature";
 import CurrentConditions from "./components/CurrentConditions";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 
+import { getUserLocation } from "./utils/geolocation";
+
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import LoadingGif from "./assets/gifs/loading-spinner.svg";
 
@@ -22,6 +24,31 @@ function App() {
 
   const API_KEY = import.meta.env.VITE_API_KEY;
 
+  const fetchWeatherByCoords = async (lat, lon) => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch weather by location");
+      }
+
+      const data = await response.json();
+
+      setWeatherData(data);
+      setCityName(data.name);
+      localStorage.setItem("city", data.name);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearch = (city) => {
     const trimmedCity = city.trim();
 
@@ -30,9 +57,59 @@ function App() {
     setCityName(trimmedCity);
   };
 
+  const handleUseLocation = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const { lat, lon } = await getUserLocation();
+
+      await fetchWeatherByCoords(lat, lon);
+    } catch (error) {
+      if (error.code === 1) {
+        setError("Location access denied");
+      } else if (error.code === 2) {
+        setError("Location is unvailable");
+      } else if (error.code === 3) {
+        setError("Location request timed out");
+      } else {
+        setError(error.message || "Failed to get your location");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const toggleUnits = () => {
     setUnits((prevUnits) => (prevUnits === "metric" ? "imperial" : "metric"));
   };
+
+  // useEffect(() => {
+  //   const fetchWeatherByCoords = async (lat, lon) => {
+  //     try {
+  //       setLoading(true);
+  //       setError("");
+
+  //       const response = await fetch(
+  //         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch weather by location");
+  //       }
+
+  //       const data = await response.json();
+
+  //       setWeatherData(data);
+  //       setCityName(data.name);
+  //       localStorage.setItem("city", data.name);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  // }, []);
 
   // Save cityName to localStorage whenever it changes
   useEffect(() => {
@@ -83,7 +160,9 @@ function App() {
 
       <SearchBar
         onSearch={handleSearch}
+        onUseLocation={handleUseLocation}
         units={units}
+        loading={loading}
         toggleUnits={toggleUnits}
       />
 

@@ -2,8 +2,15 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaCity } from "react-icons/fa";
+import { IoEarth } from "react-icons/io5";
 
-const SearchBar = ({ onSearch, units, toggleUnits }) => {
+const SearchBar = ({
+  onSearch,
+  units,
+  toggleUnits,
+  onUseLocation,
+  loading,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(null);
 
@@ -83,6 +90,18 @@ const SearchBar = ({ onSearch, units, toggleUnits }) => {
               🔍 <span className="hidden sm:inline">Search</span>
             </button>
           </div>
+
+          <button
+            onClick={onUseLocation}
+            disabled={loading}
+            className="min-w-[72px] 
+        
+          px-5 py-3
+          bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2 "
+          >
+            <IoEarth className="text-cyan-600" />
+            {loading ? "Detecting..." : "Use my location"}
+          </button>
 
           <div className="relative group">
             <button
