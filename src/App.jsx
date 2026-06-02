@@ -10,6 +10,7 @@ import { getUserLocation } from "./utils/geolocation";
 
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import LoadingGif from "./assets/gifs/loading-spinner.svg";
+import Footer from "./components/Footer";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -206,6 +207,7 @@ function App() {
         </>
       )}
       <ScrollToTopButton />
+      <Footer />
     </div>
   );
 }

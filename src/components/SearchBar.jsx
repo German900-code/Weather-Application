@@ -91,7 +91,35 @@ const SearchBar = ({
             </button>
           </div>
 
-          <button
+          <div className="flex gap-2">
+            <button
+              onClick={onUseLocation}
+              disabled={loading}
+              className="min-w-[72px] 
+        overflow-hidden
+          px-5 py-3
+          bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2 "
+            >
+              <IoEarth className="text-cyan-600" size={20} />
+              {loading ? "Detecting..." : "Use my location"}
+            </button>
+
+            <div className="relative group">
+              <button
+                onClick={toggleUnits}
+                className="min-w-[72px] w-full px-4 py-3 bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                {units === "metric" ? "°F" : "°C"}
+              </button>
+
+              <div className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-black/80 px-3 py-1.5 text-sm text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                Switch temperature unit
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* <button
             onClick={onUseLocation}
             disabled={loading}
             className="min-w-[72px] 
@@ -115,7 +143,7 @@ const SearchBar = ({
               Switch temperature unit
             </div>
           </div>
-        </div>
+        </div> */}
         {error && (
           <p className="mt-3 text-center text-sm text-red-400">{error}</p>
         )}
