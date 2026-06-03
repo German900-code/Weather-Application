@@ -83,7 +83,6 @@ const WeatherHourly = ({ API_KEY, data, units }) => {
       </div>
     );
 
-  if (loading) return;
   const now = new Date().getTime();
 
   // Filtering the hourly data to include only the next 48 hours
@@ -115,8 +114,15 @@ const WeatherHourly = ({ API_KEY, data, units }) => {
         The coming days
       </h2>
       <div className="flex flex-wrap justify-evenly gap-5">
-        {Object.keys(groupedData).map((day) => (
-          <motion.div key={day} className="w-full" whileHover={{ y: -5 }}>
+        {Object.keys(groupedData).map((day, dayIndex) => (
+          <motion.div
+            key={day}
+            className="w-full"
+            whileHover={{ y: -5 }}
+            initial={{ opacity: 0, x: dayIndex % 2 === 0 ? -40 : 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <h2 className="text-purple-500 text-xl mb-4 font-bold">{day}</h2>
 
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide  ">
@@ -132,10 +138,18 @@ const WeatherHourly = ({ API_KEY, data, units }) => {
 
                 return (
                   <motion.div
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.7 }}
+                    key={item.dt}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: index * 0.06,
+                      ease: "easeOut",
+                    }}
+                    whileHover={{
+                      y: -6,
+                      scale: 1.04,
+                    }}
                     className="min-w-[120px] bg-white/10 p-5 rounded-xl text-center backdrop-blur-md md:hover:bg-white/20 transition-all  duration-300 transform will-change-transform  md:hover:scale-95 hover:border-2 border-purple-500 "
                   >
                     <p className="text-white font-bold mb-3">{time}</p>

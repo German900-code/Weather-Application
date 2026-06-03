@@ -74,20 +74,43 @@ const SearchBar = ({
             <input
               type="text"
               value={inputValue}
-              onChange={(e) => {
-                setInputValue(e.target.value);
-                setError("");
-              }}
+              onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Enter city (e.g. London)"
-              className="w-[80%] lg:w-full px-3 md:px-4 md:py-3 lg:px-5 lg:py-3 py-2 bg-transparent outline-none text-white placeholder-gray-400 text-sm sm:text-base"
+              className="
+                min-w-0
+                flex-1
+                bg-transparent
+                px-4
+                py-3
+                text-white
+                placeholder:text-white/50
+                outline-none
+              "
             />
 
             <button
-              className="w-[20%] px-2 sm:px-5 py-3 bg-purple-500 hover:bg-purple-600 transition text-white flex items-center justify-center gap-1 sm:gap-2 text-sm sm:text-base whitespace-nowrap"
+              className="
+              shrink-0
+              px-4
+              sm:px-5
+              py-3
+              bg-purple-500
+              hover:bg-purple-600
+              transition
+              text-white
+              flex
+              items-center
+              justify-center
+              gap-2
+              text-sm
+              sm:text-base
+              whitespace-nowrap
+                "
               onClick={handleSubmit}
             >
-              🔍 <span className="hidden sm:inline">Search</span>
+              <span>🔍</span>
+              <span className="hidden md:inline">Search</span>
             </button>
           </div>
 
@@ -96,9 +119,9 @@ const SearchBar = ({
               onClick={onUseLocation}
               disabled={loading}
               className="min-w-[72px] 
-        overflow-hidden
-          px-5 py-3
-          bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2 "
+              overflow-hidden
+                px-5 py-3
+                bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2 "
             >
               <IoEarth className="text-cyan-600" size={20} />
               {loading ? "Detecting..." : "Use my location"}
@@ -119,31 +142,6 @@ const SearchBar = ({
           </div>
         </div>
 
-        {/* <button
-            onClick={onUseLocation}
-            disabled={loading}
-            className="min-w-[72px] 
-        
-          px-5 py-3
-          bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2 "
-          >
-            <IoEarth className="text-cyan-600" />
-            {loading ? "Detecting..." : "Use my location"}
-          </button>
-
-          <div className="relative group">
-            <button
-              onClick={toggleUnits}
-              className="min-w-[72px] w-full px-4 py-3 bg-white/10 md:hover:bg-purple-500 text-white rounded-xl transition whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500"
-            >
-              {units === "metric" ? "°F" : "°C"}
-            </button>
-
-            <div className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-black/80 px-3 py-1.5 text-sm text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              Switch temperature unit
-            </div>
-          </div>
-        </div> */}
         {error && (
           <p className="mt-3 text-center text-sm text-red-400">{error}</p>
         )}

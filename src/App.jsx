@@ -85,33 +85,6 @@ function App() {
     setUnits((prevUnits) => (prevUnits === "metric" ? "imperial" : "metric"));
   };
 
-  // useEffect(() => {
-  //   const fetchWeatherByCoords = async (lat, lon) => {
-  //     try {
-  //       setLoading(true);
-  //       setError("");
-
-  //       const response = await fetch(
-  //         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
-  //       );
-
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch weather by location");
-  //       }
-
-  //       const data = await response.json();
-
-  //       setWeatherData(data);
-  //       setCityName(data.name);
-  //       localStorage.setItem("city", data.name);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  // }, []);
-
   // Save cityName to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("savedCityName", cityName);
@@ -182,7 +155,7 @@ function App() {
       )}
       {/* Weather Data when available */}
       {loading ? (
-        <div className="text-white text-center m-10">Loading...</div>
+        <div className="text-purple-600 text-center m-10">Loading...</div>
       ) : error ? (
         <div className="text-purple-500 text-3xl text-center">
           An error occured 😒
