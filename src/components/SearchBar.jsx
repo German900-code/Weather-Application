@@ -41,7 +41,7 @@ const SearchBar = ({
   };
 
   return (
-    <motion.header className="sticky top-5 z-30 mb-14">
+    <motion.section className="sticky top-5 z-30 mb-14">
       <motion.div
         style={{ scale, width }}
         initial={{ scale: 0 }}
@@ -146,7 +146,7 @@ const SearchBar = ({
           <p className="mt-3 text-center text-sm text-red-400">{error}</p>
         )}
       </motion.div>
-    </motion.header>
+    </motion.section>
   );
 };
 

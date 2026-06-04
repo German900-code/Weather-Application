@@ -109,7 +109,7 @@ const WeatherHourly = ({ API_KEY, data, units }) => {
   }, {});
 
   return (
-    <div className="flex flex-col gap-8 mt-14 md:w-[70%] m-auto">
+    <section className="flex flex-col gap-8 mt-14 md:w-[70%] m-auto">
       <h2 className="text-purple-500 md:hover:text-purple-800 duration-300 text-3xl text-center mb-5">
         The coming days
       </h2>
@@ -172,7 +172,7 @@ const WeatherHourly = ({ API_KEY, data, units }) => {
           </motion.div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

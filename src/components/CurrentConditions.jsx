@@ -173,7 +173,7 @@ const CurrentConditions = ({ data, units }) => {
   if (!data) return <p>Loading...</p>;
 
   return (
-    <main className="m-auto mt-10 max-w-6xl md:w-[70%]">
+    <section className="m-auto mt-10 max-w-6xl md:w-[70%]">
       <h2 className="text-purple-500 text-3xl text-center mb-12 md:hover:text-purple-800 duration-300 md:m-14">
         Current Conditions
       </h2>
@@ -196,7 +196,7 @@ const CurrentConditions = ({ data, units }) => {
           />
         ))}
       </motion.div>
-    </main>
+    </section>
   );
 };
 

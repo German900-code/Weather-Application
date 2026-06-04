@@ -11,6 +11,7 @@ import { getUserLocation } from "./utils/geolocation";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import LoadingGif from "./assets/gifs/loading-spinner.svg";
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -128,9 +129,21 @@ function App() {
 
   return (
     <div className="w-[90%] m-auto ">
-      <h1 className="text-center text-purple-500 mt-10 text-3xl mb-14 font-bold md:hover:text-purple-800 duration-300 lg:text-5xl">
-        Weather Forecast
-      </h1>
+      <Header />
+      {/* <div className="mx-auto mb-10 flex max-w-6xl items-center gap-4 border-b border-white/10 px-4 py-8">
+        <h1 className="text-3xl font-bold text-purple-500 duration-300 md:hover:text-purple-800 lg:text-5xl">
+          Weather Forecast
+        </h1>
+
+        <img src={WeatherIcon} alt="weather icon" className="w-10 lg:w-12" />
+      </div> */}
+
+      {/* <div className="flex items-center m-10 pb-10 border-b-2 border-gray-500 rounded-sm ">
+        <h1 className=" text-center text-purple-500 text-3xl font-bold md:hover:text-purple-800 duration-300 lg:text-5xl">
+          Weather Forecast
+        </h1>
+        <img src={WeatherIcon} alt="weather icon" className="ml-5 w-12" />
+      </div> */}
 
       <SearchBar
         onSearch={handleSearch}

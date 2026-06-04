@@ -72,7 +72,7 @@ const CityAndTemperature = ({ data, units }) => {
   }, [data]);
 
   return (
-    <div className="mt-10 flex flex-wrap items-start  gap-7 justify-between md:justify-evenly">
+    <section className="mt-10 flex flex-wrap items-start  gap-7 justify-between md:justify-evenly">
       <div className="flex items-center gap-3 flex-col">
         <div className="flex flex-row gap-3 items-center w-full">
           <FaLocationDot className="text-red-600 text-2xl md:hover:scale-125 duration-200 " />
@@ -98,7 +98,7 @@ const CityAndTemperature = ({ data, units }) => {
           <p className="text-gray-400">{data?.weather?.[0].main}</p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
