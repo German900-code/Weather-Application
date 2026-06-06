@@ -31,19 +31,21 @@ A modern weather application built with React + Vite featuring a clean UI, smoot
 
 Mobile version:
 
-![alt text](image.png)
+![Header content for mobile](src/assets/preview/mobile-preview/header-content.png)
 
-![alt text](image-1.png)
+![Current conditions content for mobile](src/assets/preview/mobile-preview/conditions-content.png)
 
-![alt text](image-2.png)
+![Weather hourly and footer contents for mobile](src/assets/preview/mobile-preview/hourly-and-footer-content.png)
 
 PC version:
 
-![alt text](image-3.png)
+![Header content for the PC](src/assets/preview/pc-preview/header-content.png)
 
-![alt text](image-4.png)
+![Current conditions content for the PC](src/assets/preview/pc-preview/conditions-content.png)
 
-![alt text](image-5.png)
+![Weather hourly content for the PC](src/assets/preview/pc-preview/hourly-content.png)
+
+![Footer content for the PC](src/assets/preview/pc-preview/footer-content.png)
 
 ## 🚀 Live Demo
 
